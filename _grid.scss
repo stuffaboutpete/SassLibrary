@@ -1,0 +1,40 @@
+@function grid-setup($columns, $column-width-index, $gutter-width-index, $outer-gutter: true){
+	$_grid-columns: $columns;
+	$_grid-column-width-index: $column-width-index;
+	$_grid-gutter-width-index: $gutter-width-index;
+	$_grid-outer-gutter: $outer-gutter;
+	@return $_grid-columns;
+}
+
+@function grid-reset(){
+	$_grid-columns: 12;
+	$_grid-column-width-index: 60;
+	$_grid-gutter-width-index: 10;
+	$_grid-outer-gutter: true;
+	@return $_grid-columns;
+}
+
+@function grid-get-width($column-span){
+	@if $_grid-outer-gutter {
+		$full-width-index: $_grid-columns * _grid-get-full-column-index();
+	} @else {
+		$full-width-index: ( $_grid-columns * _grid-get-full-column-index() )
+			- ( 2 * $_grid-gutter-width-index );
+	}
+	@return ( $column-span * _grid-get-full-column-index() - 2 * $_grid-gutter-width-index )
+		/ ( $full-width-index )
+		* 100%;
+}
+
+@function grid-get-gutter(){
+	@return $_grid-gutter-width-index / ( _grid-get-full-column-index() * $_grid-columns ) * 100%;
+}
+
+$_grid-column-width-index: 60;
+$_grid-gutter-width-index: 10;
+$_grid-columns: 12;
+$_grid-outer-gutter: true;
+
+@function _grid-get-full-column-index(){
+	@return $_grid-column-width-index + 2 * $_grid-gutter-width-index;
+}
